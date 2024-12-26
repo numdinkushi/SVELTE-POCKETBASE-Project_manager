@@ -572,6 +572,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rvf/set-get@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "@rvf/set-get@npm:7.0.0"
+  checksum: 10c0/1a4f2878508f4088ba2910fe80316c3a75d79109b26a6a4e35a533012f2bc8cccbbaa2c3d9546f06b3e49ddc67bdd1dc2a853cac0372be76df089ee02cdd2757
+  languageName: node
+  linkType: hard
+
 "@sveltejs/adapter-auto@npm:^3.0.0":
   version: 3.3.1
   resolution: "@sveltejs/adapter-auto@npm:3.3.1"
@@ -911,6 +918,7 @@ __metadata:
   resolution: "app@workspace:."
   dependencies:
     "@eslint/compat": "npm:^1.2.3"
+    "@rvf/set-get": "npm:^7.0.0"
     "@sveltejs/adapter-auto": "npm:^3.0.0"
     "@sveltejs/kit": "npm:^2.0.0"
     "@sveltejs/vite-plugin-svelte": "npm:^4.0.0"
@@ -922,6 +930,7 @@ __metadata:
     eslint: "npm:^9.7.0"
     eslint-plugin-svelte: "npm:^2.36.0"
     globals: "npm:^15.0.0"
+    object-to-formdata: "npm:^4.5.1"
     pocketbase: "npm:^0.24.0"
     svelte: "npm:^5.0.0"
     svelte-check: "npm:^4.0.0"
@@ -930,6 +939,8 @@ __metadata:
     typescript: "npm:^5.0.0"
     typescript-eslint: "npm:^8.0.0"
     vite: "npm:^5.4.11"
+    zod: "npm:^3.24.1"
+    zod-form-data: "npm:^2.0.4"
   languageName: unknown
   linkType: soft
 
@@ -2439,6 +2450,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"object-to-formdata@npm:^4.5.1":
+  version: 4.5.1
+  resolution: "object-to-formdata@npm:4.5.1"
+  checksum: 10c0/d47f1fb2a81f1d82949a9abe71fba371f309d2ee56419017187eaa16f857851c2c010b1384a827a2a7850db0e8f6a7c5e55fb6dd6b23fa2e45391b851de662ef
+  languageName: node
+  linkType: hard
+
 "optionator@npm:^0.9.3":
   version: 0.9.4
   resolution: "optionator@npm:0.9.4"
@@ -3497,5 +3515,22 @@ __metadata:
   version: 1.1.2
   resolution: "zimmerframe@npm:1.1.2"
   checksum: 10c0/8f693609c31cbb4449db223acd61661bc93b73e615f9db6fb8c86d4ceea84ca54cbbeebcf53cf74c22a1f923b92abd18e97988a5e175c76b6ab17238e5593a9d
+  languageName: node
+  linkType: hard
+
+"zod-form-data@npm:^2.0.4":
+  version: 2.0.4
+  resolution: "zod-form-data@npm:2.0.4"
+  peerDependencies:
+    "@rvf/set-get": ">= 6.0.3 < 8.0.0"
+    zod: ">= 3.11.0"
+  checksum: 10c0/a125f9a9998df4201fd06ebe7ba6bb4647acc046644cf6ba0aefa4839fbd70e56f59a93da054da78a3010fb138010018387950108ac9fb2d012f78c2b0564b13
+  languageName: node
+  linkType: hard
+
+"zod@npm:^3.24.1":
+  version: 3.24.1
+  resolution: "zod@npm:3.24.1"
+  checksum: 10c0/0223d21dbaa15d8928fe0da3b54696391d8e3e1e2d0283a1a070b5980a1dbba945ce631c2d1eccc088fdbad0f2dfa40155590bf83732d3ac4fcca2cc9237591b
   languageName: node
   linkType: hard

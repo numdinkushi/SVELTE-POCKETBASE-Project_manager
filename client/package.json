@@ -29,11 +29,15 @@
 		"vite": "^5.4.11"
 	},
 	"dependencies": {
+		"@rvf/set-get": "^7.0.0",
 		"@tailwindcss/container-queries": "^0.1.1",
 		"@tailwindcss/forms": "^0.5.9",
 		"@tailwindcss/typography": "^0.5.15",
+		"object-to-formdata": "^4.5.1",
 		"pocketbase": "^0.24.0",
-		"svelte-icons": "^2.1.0"
+		"svelte-icons": "^2.1.0",
+		"zod": "^3.24.1",
+		"zod-form-data": "^2.0.4"
 	},
 	"packageManager": "yarn@4.5.2+sha224.c2e2e9ed3cdadd6ec250589b3393f71ae56d5ec297af11cec1eba3b4"
 }

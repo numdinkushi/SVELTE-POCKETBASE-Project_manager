@@ -1,4 +1,5 @@
 <script>
+	// @ts-ignore
 	import DiCode from 'svelte-icons/di/DiCode.svelte';
 </script>
 
