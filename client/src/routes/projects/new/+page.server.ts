@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { serialize } from 'object-to-formdata';
 import projectSchema from './create-project-schema';
 import { ZodError } from 'zod';
+import type { Locals } from '$lib/types';
 
 export const actions = {
-    create: async ({ request, locals }) => {
+    create: async ({ request, locals }:{request: Request, locals: Locals; }) => {
         let formObj;
 
         try {
@@ -16,13 +18,10 @@ export const actions = {
             }
 
             formObj = projectSchema.parse(formData);
-            formObj.user = locals.user.id;
+            formObj.user = locals.user && locals.user.id;
             const serializedFormData = serialize(formObj);
-            console.log(34343434, serializedFormData);
+            await locals.pb.collection('projects').create(serializedFormData);
 
-            const record = await locals.pb.collection('projects').create(serializedFormData);
-            console.log(4444, record);
-            
             return ({
                 status: 200,
                 message: 'Project created successfully',
@@ -40,7 +39,6 @@ export const actions = {
                         ])
                     ).values()
                 );
-                console.log(707070707, errors);
 
                 return {
                     status: 400,

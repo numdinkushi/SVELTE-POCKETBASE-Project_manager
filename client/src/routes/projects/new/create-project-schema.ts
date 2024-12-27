@@ -13,7 +13,8 @@ const projectSchema = zfd.formData({
     //     return file.size <= 3 * 1024 * 1024; // Example: file size should be less than 5MB
     // }, {
     //     message: "File size should be less than 3MB"
-    // })
+    // }),
+    user: z.any()
 }).superRefine((data, ctx) => {
     function isValidURL(url: string) {
         const urlPattern = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
