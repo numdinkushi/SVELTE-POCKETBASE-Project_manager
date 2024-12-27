@@ -3,7 +3,7 @@
   import "../app.postcss";
   // @ts-ignore
   import DiCode from "svelte-icons/di/DiCode.svelte";
-
+  import toast, { Toaster } from "svelte-french-toast";
   // @ts-ignore
   let { data, children } = $props();
 </script>
@@ -61,5 +61,6 @@
     class="h- w-full xl:container mx-auto mt-20 px-4 pb-10 overflow-y-scroll"
   >
     {@render children()}
+    <Toaster />
   </div>
 </div>

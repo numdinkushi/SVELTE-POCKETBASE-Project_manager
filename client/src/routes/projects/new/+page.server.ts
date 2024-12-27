@@ -1,41 +1,57 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import projectSchema from "./create-project-schema";
-import { serialize } from "object-to-formdata";
-import { error, fail, redirect } from "@sveltejs/kit";
+import { serialize } from 'object-to-formdata';
+import projectSchema from './create-project-schema';
+import { ZodError } from 'zod';
 
 export const actions = {
     create: async ({ request, locals }) => {
-        
         let formObj;
-        
+
         try {
-            formObj = projectSchema.parse(await request.formData());
+            const formData = await request.formData();
+            const thumbnail = formData.get('thumbnail');
+
+            // Check if the thumbnail is a File object
+            if (thumbnail && !(thumbnail instanceof File)) {
+                throw new Error('Thumbnail is not a valid file');
+            }
+
+            formObj = projectSchema.parse(formData);
             formObj.user = locals.user.id;
-            const formData = serialize(formObj);
-            console.log(34343434, formData);
+            const serializedFormData = serialize(formObj);
+            console.log(34343434, serializedFormData);
 
-            try {
-                const record = await locals.pb.collection('projects').create(formData);
-                console.log(4444, record);
-            } catch (err) {
-                console.log(2222, err.response.data);
-                throw error(500, 'Something went wrong during project submission');
-            }
-        } catch (err: any) {
-            console.log(707070707, err )
-            if (err?.status === 500) {
-                throw error(500, 'Something went wrong during project submission');
-            }
-
-            const { fieldErrors: errors } = err.flatten();
-
-            return fail(400, {
-                data: formObj,
-                errors
+            const record = await locals.pb.collection('projects').create(serializedFormData);
+            console.log(4444, record);
+            
+            return ({
+                status: 200,
+                message: 'Project created successfully',
+                success: true,
             });
 
-        }
+        } catch (err: any) {
+            if (err instanceof ZodError) {
+                // Map and deduplicate errors
+                const errors = Array.from(
+                    new Map(
+                        err.errors.map((fieldError) => [
+                            fieldError.path[0], // Key for deduplication based on the path
+                            { path: fieldError.path[0], message: fieldError.message } // Error object
+                        ])
+                    ).values()
+                );
+                console.log(707070707, errors);
 
-        throw redirect(303, '/');
+                return {
+                    status: 400,
+                    body: { message: 'Validation error', errors }
+                };
+            } else {
+                return {
+                    status: 500,
+                    body: { message: 'Something went wrong during project submission', errors: err.message }
+                };
+            }
+        }
     },
 };

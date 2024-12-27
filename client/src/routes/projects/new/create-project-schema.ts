@@ -1,8 +1,9 @@
+/* eslint-disable no-useless-escape */
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 
 const projectSchema = zfd.formData({
-    name: z.string().min(1, { message: "Name is required" }).max(10, { message: "Name must be 10 characters or less" }).trim(),
+    name: z.string().min(1, { message: "Name is required" }).max(15, { message: "Name must be 10 characters or less" }).trim(),
     tagline: z.string().min(1, { message: "Tagline is required" }).max(60, { message: "Tagline must be 60 characters or less" }).trim(),
     url: z.string().url({ message: "URL must be a valid URL" }),
     description: z.string().min(1, { message: "Description is required" }).max(240, { message: "Description must be 240 characters or less" }).trim(),
@@ -14,6 +15,11 @@ const projectSchema = zfd.formData({
     //     message: "File size should be less than 3MB"
     // })
 }).superRefine((data, ctx) => {
+    function isValidURL(url: string) {
+        const urlPattern = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+        return urlPattern.test(url);
+      }
+      
     if (data.name.length < 1) {
         ctx.addIssue({
             code: z.ZodIssueCode.custom,
@@ -35,13 +41,13 @@ const projectSchema = zfd.formData({
             path: ["description"]
         });
     }
-    // if (!data.url.startsWith('http') || !data.url.startsWith('https')) {
-    //     ctx.addIssue({
-    //         code: z.ZodIssueCode.custom,
-    //         message: "URL must start with 'http'",
-    //         path: ["url"]
-    //     });
-    // }
+    if (!isValidURL(data.url)) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "URL is not valid",
+            path: ["url"]
+        });
+    }
     // if (data.thumbnail && data.thumbnail.size > 5 * 1024 * 1024) {
     //     ctx.addIssue({
     //         code: z.ZodIssueCode.custom,
