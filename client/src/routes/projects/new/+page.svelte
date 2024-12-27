@@ -16,41 +16,76 @@
   }
 
   async function onSubmit(e: SubmitEvent) {
-    e.preventDefault();
-    const formData = new FormData(e.target as HTMLFormElement);
+  e.preventDefault();
+  const formData = new FormData(e.target as HTMLFormElement);
 
-    // Append the thumbnail file to the form data
-    const thumbnailInput = document.getElementById(
-      "thumbnail"
-    ) as HTMLInputElement;
-    if (thumbnailInput.files) {
-      for (let file of thumbnailInput.files) {
-        formData.append("thumbnail", file);
-      }
-    }
-
-    try {
-      const response = await fetch("/projects/new?/create", {
-        method: "POST",
-        body: formData,
-      });
-      const result = await response.json();
-      const success = JSON.parse(result?.data)[3];
-      console.log(898232, success);
-      if (success === true) {
-        //reset form data, and redirect to '/'
-        toast.success("Project Successfully created");
-        goto("/");
-      } else {
-        const parsedData = JSON.parse(result.data);
-        const structuredData = restructureData(parsedData);
-        errors = structuredData;
-      }
-    } catch (err) {
-      toast.error("Something went wrong during project submission");
-      console.error("Something went wrong during project submission", err);
-    }
+  // Append the thumbnail file to the form data
+  const thumbnailInput = document.getElementById("thumbnail") as HTMLInputElement;
+  if (thumbnailInput.files && thumbnailInput.files.length > 0) {
+    formData.append("thumbnail", thumbnailInput.files[0]);
+    console.log("Appending file:", thumbnailInput.files[0]); // Debugging line
   }
+
+  try {
+    const response = await fetch("/projects/new?/create", {
+      method: "POST",
+      body: formData,
+    });
+    const result = await response.json();
+    const success = JSON.parse(result?.data)[3];
+    console.log(898232, success);
+    if (success === true) {
+      //reset form data, and redirect to '/'
+      toast.success("Project Successfully created");
+      goto("/");
+    } else {
+      const parsedData = JSON.parse(result.data);
+      const structuredData = restructureData(parsedData);
+      errors = structuredData;
+    }
+  } catch (err) {
+    toast.error("Something went wrong during project submission");
+    console.error("Something went wrong during project submission", err);
+  }
+}
+
+  // async function onSubmit(e: SubmitEvent) {
+  //   e.preventDefault();
+  //   const formData = new FormData(e.target as HTMLFormElement);
+
+  //   // Append the thumbnail file to the form data
+  //   const thumbnailInput = document.getElementById(
+  //     "thumbnail"
+  //   ) as HTMLInputElement;
+  //   if (thumbnailInput.files) {
+  //     for (let file of thumbnailInput.files) {
+  //       formData.append("thumbnail", file);
+  //       console.log("Appending file:", file); // Debugging line
+  //     }
+  //   }
+
+  //   try {
+  //     const response = await fetch("/projects/new?/create", {
+  //       method: "POST",
+  //       body: formData,
+  //     });
+  //     const result = await response.json();
+  //     const success = JSON.parse(result?.data)[3];
+  //     console.log(898232, success);
+  //     if (success === true) {
+  //       //reset form data, and redirect to '/'
+  //       toast.success("Project Successfully created");
+  //       goto("/");
+  //     } else {
+  //       const parsedData = JSON.parse(result.data);
+  //       const structuredData = restructureData(parsedData);
+  //       errors = structuredData;
+  //     }
+  //   } catch (err) {
+  //     toast.error("Something went wrong during project submission");
+  //     console.error("Something went wrong during project submission", err);
+  //   }
+  // }
 </script>
 
 <div class="flex flex-col items-center h-full w-full pt-5">

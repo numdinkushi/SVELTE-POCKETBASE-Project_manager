@@ -7,7 +7,6 @@
   }
 
   let { data }: { data: DataType } = $props();
-  console.log(111444, data);
 </script>
 
 <h1 class="text-3xl font-bold text-blue-400">Your next favorite thing!!! 👋</h1>
