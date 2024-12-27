@@ -1,9 +1,11 @@
 <script lang="ts">
   import FaComment from "svelte-icons/fa/FaComment.svelte";
   import FaCaretUp from "svelte-icons/fa/FaCaretUp.svelte";
+  export let project;
+  console.log(8777, project);
 </script>
 
-<div class="bg-base-100 hover:bg-base-300 hover:cursor-pointer shadow-md w-full h-28 flex items-center justify-center">
+<div class="bg-base-100 hover:bg-base-300 hover:cursor-pointer shadow-md w-full h-28 flex items-center justify-center ">
   <div class="avatar">
     <div class="w-24 rounded">
       <img

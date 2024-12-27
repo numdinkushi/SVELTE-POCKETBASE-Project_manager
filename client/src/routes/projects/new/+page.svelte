@@ -7,7 +7,6 @@
 
   let { data, form: returnedFormData }: { data: PageData; form: FormData } =
     $props();
-  console.log(987789, { data }, { returnedFormData });
 
   let errors: { path: string; message: string }[] = $state([]);
 
