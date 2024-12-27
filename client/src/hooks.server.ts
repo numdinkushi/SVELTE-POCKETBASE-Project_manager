@@ -18,11 +18,13 @@ type PocketBaseClient = Client & {
   realtime: RealtimeService;
   health: HealthService;
   users: RecordService;
+  projects: any
 };
 
 interface Locals  {
   pb: PocketBaseClient;
   user?: any;
+  projects?: any
 }
 
 export const handle: Handle = async ({ event, resolve }) => {
@@ -30,6 +32,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
   // Ensure the users service is available
   pb.users = pb.collection('users');
+  pb.projects = pb.collection('projects');
 
   (event.locals as Locals).pb = pb;
   (event.locals as Locals).pb.authStore.loadFromCookie(event.request.headers.get('cookie') || '');

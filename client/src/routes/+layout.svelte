@@ -8,9 +8,9 @@
   let { data, children } = $props();
 </script>
 
-<div class="h-full w-full min-h-screen bg-base-200">
+<div class="h-full w-full min-h-screen bg-base-200 ">
   <div class="bg-base-100 border-b-2">
-    <div class="navbar xl:container mx-auto bg-base-100 px-4 fixed">
+    <div class="navbar xl:container mx-auto bg-base-100 px-4 fixed z-50">
       <div class="navbar-start">
         <a
           href="/"
@@ -58,7 +58,7 @@
     </div>
   </div>
   <div
-    class="h- w-full xl:container mx-auto mt-20 px-4 pb-10 overflow-y-scroll"
+    class="h-full w-full xl:container mx-auto mt-20 px-4 pb-10"
   >
     {@render children()}
     <Toaster />
