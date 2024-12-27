@@ -3,20 +3,54 @@
   import toast, { Toaster } from "svelte-french-toast";
   import type { PageData } from "./$types";
   import { restructureData } from "$lib/utils/utils";
+  import { goto } from "$app/navigation";
 
-  let { data, form: returnedFormData }: { data: PageData; form: FormData } = $props();
+  let { data, form: returnedFormData }: { data: PageData; form: FormData } =
+    $props();
   console.log(987789, { data }, { returnedFormData });
 
-  let errors: { path: string; message: string }[] = [];
-
-  // Extract errors from returnedFormData
-  if (returnedFormData && returnedFormData.body?.errors) {
-    errors = returnedFormData.body.errors;
-  }
+  let errors: { path: string; message: string }[] = $state([]);
 
   function getErrorMessage(fieldName: string) {
     const error = errors.find((error) => error.path === fieldName);
     return error ? error.message : "";
+  }
+
+  async function onSubmit(e: SubmitEvent) {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+
+    // Append the thumbnail file to the form data
+    const thumbnailInput = document.getElementById(
+      "thumbnail"
+    ) as HTMLInputElement;
+    if (thumbnailInput.files) {
+      for (let file of thumbnailInput.files) {
+        formData.append("thumbnail", file);
+      }
+    }
+
+    try {
+      const response = await fetch("/projects/new?/create", {
+        method: "POST",
+        body: formData,
+      });
+      const result = await response.json();
+      const success = JSON.parse(result?.data)[3];
+      console.log(898232, success);
+      if (success === true) {
+        //reset form data, and redirect to '/'
+        toast.success("Project Successfully created");
+        goto("/");
+      } else {
+        const parsedData = JSON.parse(result.data);
+        const structuredData = restructureData(parsedData);
+        errors = structuredData;
+      }
+    } catch (err) {
+      toast.error("Something went wrong during project submission");
+      console.error("Something went wrong during project submission", err);
+    }
   }
 </script>
 
@@ -29,9 +63,7 @@
   </div>
   <div class="bg-white py-6 shadow-md rounded-lg w-full max-w-sm mt-6">
     <form
-      method="POST"
-      action="?/create"
-      enctype="multipart/form-data"
+      on:submit={onSubmit}
       class="flex flex-col items-center space-y-2 w-full"
     >
       <div class="form-control w-full max-w-xs">
@@ -85,7 +117,9 @@
           ></textarea>
         </label>
         {#if getErrorMessage("description")}
-          <p class="text-red-500 text-sm mt-1">{getErrorMessage("description")}</p>
+          <p class="text-red-500 text-sm mt-1">
+            {getErrorMessage("description")}
+          </p>
         {/if}
       </div>
       <div class="form-control w-full max-w-xs">
@@ -93,16 +127,18 @@
           <div class="label">
             <span class="label-text">Thumbnail</span>
           </div>
-          <input type="file" name="thumbnail" class="border" />
+          <input type="file" id="thumbnail" name="thumbnail" class="border" />
         </label>
         {#if getErrorMessage("thumbnail")}
-          <p class="text-red-500 text-sm mt-1">{getErrorMessage("thumbnail")}</p>
+          <p class="text-red-500 text-sm mt-1">
+            {getErrorMessage("thumbnail")}
+          </p>
         {/if}
       </div>
       <div class="w-full max-w-xs pt-3">
-        <button type="submit" class="btn btn-primary w-full max-w-xs">
-          Add Project
-        </button>
+        <button type="submit" class="btn btn-primary w-full max-w-xs"
+          >Add Project</button
+        >
       </div>
     </form>
   </div>

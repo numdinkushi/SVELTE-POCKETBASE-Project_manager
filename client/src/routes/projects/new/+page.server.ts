@@ -20,19 +20,15 @@ export const actions = {
             const serializedFormData = serialize(formObj);
             console.log(34343434, serializedFormData);
 
-            try {
-                const record = await locals.pb.collection('projects').create(serializedFormData);
-                console.log(4444, record);
-                return {
-                    status: 200,
-                    body: { message: 'Project created successfully', data: record }
-                };
-            } catch (err) {
-                return {
-                    status: 500,
-                    body: { message: 'Something went wrong during project submission', errors: err.response.data }
-                };
-            }
+            const record = await locals.pb.collection('projects').create(serializedFormData);
+            console.log(4444, record);
+            
+            return ({
+                status: 200,
+                message: 'Project created successfully',
+                success: true,
+            });
+
         } catch (err: any) {
             if (err instanceof ZodError) {
                 // Map and deduplicate errors
