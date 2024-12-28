@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type Client from 'pocketbase';
 import type {
     LocalAuthStore,
@@ -17,8 +18,9 @@ export type PocketBaseClient = Client & {
     health: HealthService;
     users: RecordService;
     projects: RecordService;
+    votes: RecordService;
+    records: RecordService; // Add the records property here
 };
-
 // Define the type for the user object
 export interface User {
     avatar: string;

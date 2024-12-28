@@ -4,17 +4,16 @@
 
   interface DataType {
     profile: {};
-    projects: { items: DataType[] };
+    projects: DataType[];
   }
-
   let { data }: { data: DataType } = $props();
- 
 </script>
 
 <h1 class="text-3xl font-bold text-blue-400">Your next favorite thing!!! 👋</h1>
 
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-4 p-4">  <div class="lg:col-span-2">
-    {#each data?.projects?.items as project}
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-4 p-4">
+  <div class="lg:col-span-2">
+    {#each data?.projects as project}
       <ProjectListItem {project} />
     {/each}
   </div>

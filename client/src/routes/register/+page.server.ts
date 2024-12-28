@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import type { Locals } from '$lib/types';
 import { redirect } from '@sveltejs/kit';
 
 
-export const load = ({ locals }: any) => {
+export const load = ({ locals }: { locals: Locals; }) => {
 	if (locals.pb.authStore.isValid) {
 		throw redirect(303, '/');
 	}
 };
 
 export const actions = {
-	register: async ({ locals, request } : {locals: any, request: any}) => {
+	register: async ({ request, locals }: { request: Request, locals: Locals; }) => {
 		const formData = await request.formData();
 		const data = Object.fromEntries([...formData]);
 
@@ -25,9 +26,10 @@ export const actions = {
 		}
 
 		try {
-			const newUser = await locals.pb.users.create({...data});
+			const newUser = await locals.pb.users.create({ ...data });
 			console.log(555, newUser);
-			const {record, token} = await locals.pb.collection('users').authWithPassword(data.email, data.password);
+			const { record, token } = await locals.pb.collection('users')
+				.authWithPassword(data.email as string, data.password as string);
 			console.log('Auth data:', record, token);
 
 			locals.pb.authStore.clear();
