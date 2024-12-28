@@ -1,5 +1,6 @@
 <script lang="ts">
   import ProjectListItem from "$lib/components/ProjectListItem.svelte";
+  import { getImageUrl } from "$lib/helpers";
 
   interface DataType {
     profile: {};
@@ -7,12 +8,12 @@
   }
 
   let { data }: { data: DataType } = $props();
+ 
 </script>
 
 <h1 class="text-3xl font-bold text-blue-400">Your next favorite thing!!! 👋</h1>
 
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-4 p-4">
-  <div class="lg:col-span-2 ">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-4 p-4">  <div class="lg:col-span-2">
     {#each data?.projects?.items as project}
       <ProjectListItem {project} />
     {/each}
