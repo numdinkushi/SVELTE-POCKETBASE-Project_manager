@@ -33,7 +33,6 @@
     });
     const result = await response.json();
     const success = JSON.parse(result?.data)[3];
-    console.log(898232, success);
     if (success === true) {
       //reset form data, and redirect to '/'
       toast.success("Project Successfully created");

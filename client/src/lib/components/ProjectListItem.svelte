@@ -26,26 +26,26 @@
   const handleVote = async (event: Event) => {
     event.preventDefault();
     const formData = new FormData(event.target as HTMLFormElement);
-    const id = formData.get('id') as string;
+    const id = formData.get("id") as string;
 
     try {
-      const response = await fetch('?/vote', {
-        method: 'POST',
+      const response = await fetch("?/vote", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          "Content-Type": "application/x-www-form-urlencoded",
         },
         body: new URLSearchParams({ id }).toString(),
       });
 
       if (response.ok) {
-        toast.success('Vote submitted successfully!');
+        toast.success("Vote submitted successfully!");
       } else {
         const errorData = await response.json();
         toast.error(`Error: ${errorData.message}`);
       }
     } catch (error) {
-      console.error('Error submitting vote:', error);
-      toast.error('An error occurred while submitting your vote.');
+      console.error("Error submitting vote:", error);
+      toast.error("An error occurred while submitting your vote.");
     }
   };
 </script>

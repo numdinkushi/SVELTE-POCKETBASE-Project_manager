@@ -13,6 +13,7 @@ const load = async ({ locals }: { locals: Locals; }) => {
         try {
             // Fetch the projects collection
             const projectsCollection = locals.pb.projects;
+            const votesCollection = locals.pb.votes;
 
             // Get the list of projects
             const projectsResult = await projectsCollection.getList(1, 15, {
@@ -22,10 +23,29 @@ const load = async ({ locals }: { locals: Locals; }) => {
             // Serialize the data
             const serializedProjects = serializeNonPOJOs(projectsResult.items);
 
+            // Create the filter string for the votes collection
+            const projectIdFilter = serializedProjects.map((project: any) => `project = "${project.id}"`).join(' || ');
+
+            console.log('Project ID Filter:', projectIdFilter);
+
+            // Get the list of votes
+            const voteList = await votesCollection.getList(1, 9999, {
+                sort: '-created',
+                filter: projectIdFilter
+            });
+
+            // Serialize the data
+            const serializedVoteLists = serializeNonPOJOs(voteList.items);
+
+            console.log('Serialized Vote Lists:', serializedVoteLists);
+
             return serializedProjects;
-        } catch (error) {
-            console.error('Error fetching projects:', error); // Debugging statement
-            throw error;
+        } catch (err: any) {
+            console.error('Error fetching projects:', err);
+            if (err.data) {
+                console.error('Response data:', err.data.data);
+            }
+            throw error(500, 'Something went wrong while fetching projects');
         }
     };
 
@@ -35,7 +55,6 @@ const load = async ({ locals }: { locals: Locals; }) => {
 };
 
 export { load };
-
 
 export const actions = {
     vote: async ({ request, locals }: { request: Request, locals: Locals; }) => {
