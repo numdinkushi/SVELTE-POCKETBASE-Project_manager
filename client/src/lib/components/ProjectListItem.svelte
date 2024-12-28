@@ -1,24 +1,41 @@
 <script lang="ts">
   import FaComment from "svelte-icons/fa/FaComment.svelte";
   import FaCaretUp from "svelte-icons/fa/FaCaretUp.svelte";
+  import { getImageUrl } from "$lib/helpers";
+  import { onMount } from "svelte";
+
   export let project;
-  console.log(8777, project);
+
+  let imageUrl: string | null = null;
+
+  onMount(async () => {
+    try {
+      const url = await getImageUrl(project.collectionId, project.id, project.thumbnail);
+      imageUrl = url;
+      console.log("Image URL:", url);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  });
 </script>
 
-<div class="bg-base-100 hover:bg-base-300 hover:cursor-pointer shadow-md w-full h-28 flex items-center justify-center ">
+<div
+  class="bg-base-100 hover:bg-base-300 hover:cursor-pointer shadow-md w-full h-28 flex items-center justify-center"
+>
   <div class="avatar">
     <div class="w-24 rounded">
-      <img
-        alt=""
-        src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-      />
+      {#if imageUrl}
+        <img alt="" src={imageUrl} />
+      {:else}
+        <p>Image</p>
+      {/if}
     </div>
   </div>
   <div class="flex flex-col w-full ml-4 h-full justify-between relative">
     <div class="flex justify-between items-center px-7">
       <div>
-        <a href="/" class="font-semibold text-lg">Project Name</a>
-        <p>Project tagline</p>
+        <a href="/" class="font-semibold text-lg">{project?.name}</a>
+        <p>{project?.tagline}</p>
       </div>
       <div
         class="flex items-center justify-center gap-4 absolute top-[20%] right-10"
